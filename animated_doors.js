@@ -2,7 +2,7 @@
 
 export function registerAnimatedDoorSettings() {
 
-    game.settings.register("dd-import-ad-14", "animatedDoorPath", {
+    game.settings.register("dd-import-ad-v14", "animatedDoorPath", {
         name: "Animated door save path",
         hint: "Where should animated door assets be saved?",
         scope: "world",
@@ -11,7 +11,7 @@ export function registerAnimatedDoorSettings() {
         default: "assets"
     })
 
-    game.settings.register("dd-import-ad-14", "animatedWindows", {
+    game.settings.register("dd-import-ad-v14", "animatedWindows", {
         name: "Animated windows",
         hint: "If an animated window should behave as animated window or 'just' as a standard door",
         scope: "world",
@@ -20,7 +20,7 @@ export function registerAnimatedDoorSettings() {
         default: true
     })
 
-    game.settings.register("dd-import-ad-14", "animatedDoorUseHashName", {
+    game.settings.register("dd-import-ad-v14", "animatedDoorUseHashName", {
         name: "Save door assets with hash name",
         hint: "Determines if a door asset is uploaded and saved with it's door hash as part of the name. This is the safest way. If you choose to not do it a more readable name with informations added to the asset name is choosen.",
         scope: "world",
@@ -68,7 +68,7 @@ async function uploadFile(file, name, path, source, extension) {
     console.log("File Object for upload:", uploadFile)
     console.log("Source: ", source)
     console.log("Path: ", path)
-    // new FilePicker from version V13 and 14 (instead of ?? globalThis.FilePicker;)
+    // new FilePicker from version v14 and 14 (instead of ?? globalThis.FilePicker;)
     const filePicker = foundry.applications?.apps?.FilePicker?.implementation
     await filePicker.upload(source, path, uploadFile)
 }
@@ -112,9 +112,9 @@ export async function uploadAnimatedDoorAssets(file, destinationInfo = {}) {
     console.log("Reached upload 2!!")
 
 
-    console.log("V13 destination info", destinationInfo)
+    console.log("v14 destination info", destinationInfo)
     const importData = {
-        path: game.settings.get("dd-import-ad-14", "animatedDoorPath") || "assets",
+        path: game.settings.get("dd-import-ad-v14", "animatedDoorPath") || "assets",
         source: destinationInfo.source,
     }
 
@@ -138,7 +138,7 @@ export async function uploadAnimatedDoorAssets(file, destinationInfo = {}) {
                 for (let j = 0; j < assetList.length; j++) {
 
 
-                    const useHashName = game.settings.get("dd-import-ad-14", "animatedDoorUseHashName") || true
+                    const useHashName = game.settings.get("dd-import-ad-v14", "animatedDoorUseHashName") || true
 
                     content.image = assetList[j].image
                     const imageExtension = getImageType(atob(content.image.substr(0, 8)));
@@ -207,7 +207,7 @@ export function GetAnimatedDoors(file, scene, offset, pixelsPerGrid) {
                         ((door.bounds[1].x - originX) * pixelsPerGrid) + offsetX,
                         ((door.bounds[1].y - originY) * pixelsPerGrid) + offsetY
                     ],
-                    door: game.settings.get("dd-import-ad-14", "openableWindows") ? 1 : (door.closed ? 1 : 0), // If openable windows - all portals should be doors, otherwise, only portals that "block light" should be openable (doors)
+                    door: game.settings.get("dd-import-ad-v14", "openableWindows") ? 1 : (door.closed ? 1 : 0), // If openable windows - all portals should be doors, otherwise, only portals that "block light" should be openable (doors)
                     light: door.closed ? CONST.EDGE_SENSE_TYPES.NORMAL : CONST.EDGE_SENSE_TYPES.PROXIMITY,
                     sight: door.closed ? CONST.EDGE_SENSE_TYPES.NORMAL : CONST.EDGE_SENSE_TYPES.PROXIMITY,
                     threshold: door.closed ? {} : { attenuation: true, light: 2, sight: 2 }
@@ -259,8 +259,8 @@ export function GetAnimatedDoors(file, scene, offset, pixelsPerGrid) {
                     sound: CONST.EDGE_SENSE_TYPES.NORMAL,
                     threshold: { attenuation: false, darkness: null, light: null, sight: null }
                 }
-                let isOpenableWindow = game.settings.get("dd-import-ad-14", "openableWindows")
-                let isAnimatedWindow = game.settings.get("dd-import-ad-14", "animatedWindows")
+                let isOpenableWindow = game.settings.get("dd-import-ad-v14", "openableWindows")
+                let isAnimatedWindow = game.settings.get("dd-import-ad-v14", "animatedWindows")
                 let isDoor = true
                 if (foundryDoor.door_type === -1) {
                     isDoor = false // make sure it is not treated as a door
@@ -308,11 +308,11 @@ function getAnimationProperties(door) {
     const doorAnimation = door.animation;
     console.log("DOORANIMATION door.animation", doorAnimation)
 
-    const doorPath = game.settings.get("dd-import-ad-14", "animatedDoorPath") || "assets"
+    const doorPath = game.settings.get("dd-import-ad-v14", "animatedDoorPath") || "assets"
     //const doorPath = "assets/" //"canvas/doors/large/" //needs to get a setting
 
     console.log("DOORANIMATION doorPath", doorPath)
-    const useHashName = game.settings.get("dd-import-ad-14", "animatedDoorUseHashName") || true
+    const useHashName = game.settings.get("dd-import-ad-v14", "animatedDoorUseHashName") || true
     let doorTexture = "/canvas/doors/large/Door_Metal_Gray_E1_1x1.webp"
     if (useHashName) {
         doorTexture = doorPath + "/" + doorAnimation.texture_hash + "." + doorAnimation.extension || doorTexture

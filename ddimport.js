@@ -5,7 +5,7 @@ Hooks.once("init", registerAnimatedDoorSettings);
 
 Hooks.on("renderSceneDirectory", async (app, html) => {
   let button = document.createElement("button");
-  button.innerHTML = "<i class='fas fa-file-import'></i> Universal Battlemap Import";
+  button.innerHTML = "<i class='fas fa-file-import'></i> AD Universal Battlemap Import";
   button.addEventListener("click", ev => {
     new DDImporter().render(true);
   })
@@ -14,7 +14,7 @@ Hooks.on("renderSceneDirectory", async (app, html) => {
 })
 
 Hooks.on("init", () => {
-  game.settings.register("dd-import-ad-14", "importSettings", {
+  game.settings.register("dd-import-ad-v14", "importSettings", {
     name: "Dungeondraft Default Path",
     scope: "world",
     config: false,
@@ -33,7 +33,7 @@ Hooks.on("init", () => {
     }
   })
 
-  game.settings.register("dd-import-ad-14", "openableWindows", {
+  game.settings.register("dd-import-ad-v14", "openableWindows", {
     name: "Openable Windows",
     hint: "Should windows be openable? Note that you can make portals import as windows by unchecking 'block light' in Dungeondraft",
     scope: "world",
@@ -46,8 +46,8 @@ Hooks.on("init", () => {
 class DDImportProgress extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
-    id: "dd-import-ad-14-progress",
-    classes: ["dd-import-ad-14-progress", "standard-form"],
+    id: "dd-import-ad-v14-progress",
+    classes: ["dd-import-ad-v14-progress", "standard-form"],
     window: {
       title: "Importing Map",
       resizable: false,
@@ -57,7 +57,7 @@ class DDImportProgress extends foundry.applications.api.HandlebarsApplicationMix
   };
 
   static PARTS = {
-    form: { template: "modules/dd-import-ad-14/progress.hbs" }
+    form: { template: "modules/dd-import-ad-v14/progress.hbs" }
   };
 
   _backdrop = null;
@@ -66,7 +66,7 @@ class DDImportProgress extends foundry.applications.api.HandlebarsApplicationMix
     await super._onRender(options);
     if (!this._backdrop) {
       this._backdrop = document.createElement("div");
-      this._backdrop.className = "dd-import-ad-14-modal-backdrop";
+      this._backdrop.className = "dd-import-ad-v14-modal-backdrop";
       document.body.appendChild(this._backdrop);
     }
     this.element.style.zIndex = "100";
@@ -104,7 +104,7 @@ class DDImportProgress extends foundry.applications.api.HandlebarsApplicationMix
 class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
-    id: "dd-import-ad-14",
+    id: "dd-import-ad-v14",
     tag: "form",
     classes: ["standard-form"],
     window: {
@@ -129,7 +129,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
   /** @override */
   static PARTS = {
     form: {
-      template: "modules/dd-import-ad-14/importer.hbs",
+      template: "modules/dd-import-ad-v14/importer.hbs",
       scrollable: [""]
     },
     footer: {
@@ -140,7 +140,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
   async _prepareContext() {
     let context = await super._prepareContext();
-    let settings = game.settings.get("dd-import-ad-14", "importSettings")
+    let settings = game.settings.get("dd-import-ad-v14", "importSettings")
 
     context.dataSources = {
       data: "User Data",
@@ -205,7 +205,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
     //Cepeu: ok most data for foundry upload seems hard coded in settings. No it comes from the form on submitting and is stored in the settings:
     // so either do a settings object for the upload path or add another form element
-    game.settings.set("dd-import-ad-14", "importSettings", {
+    game.settings.set("dd-import-ad-v14", "importSettings", {
       source: submitData.source,
       bucket: submitData.bucket,
       path: submitData.path,
@@ -247,7 +247,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
     //CePeU Animated Doors
     // Animated Doors correction: textures and per-instance orientation must be
     // ready BEFORE _addLevelData creates WallDocuments, not after Scene.create.
-    const doorPath = game.settings.get("dd-import-ad-14", "animatedDoorPath")
+    const doorPath = game.settings.get("dd-import-ad-v14", "animatedDoorPath")
     await uploadAnimatedDoorAssets(files, {
       path: doorPath || "assets", source: importData.source || "data",
       bucket: importData.bucket
@@ -1117,7 +1117,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
             ((door.bounds[1].x - originX) * pixelsPerGrid) + offsetX,
             ((door.bounds[1].y - originY) * pixelsPerGrid) + offsetY
           ],
-          door: game.settings.get("dd-import-ad-14", "openableWindows") ? 1 : (door.closed ? 1 : 0), // If openable windows - all portals should be doors, otherwise, only portals that "block light" should be openable (doors)
+          door: game.settings.get("dd-import-ad-v14", "openableWindows") ? 1 : (door.closed ? 1 : 0), // If openable windows - all portals should be doors, otherwise, only portals that "block light" should be openable (doors)
           light: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           sight: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           threshold: door.closed ? {} : { attenuation: true, light: 10, sight: 10 }
