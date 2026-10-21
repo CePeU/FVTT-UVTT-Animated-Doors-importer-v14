@@ -204,7 +204,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
     if (fileContents.length <= 1) effectiveMode = "l";
 
     //Cepeu: ok most data for foundry upload seems hard coded in settings. No it comes from the form on submitting and is stored in the settings:
-    // so either do a settings objejct for the upload path or add another form element
+    // so either do a settings object for the upload path or add another form element
     game.settings.set("dd-import-ad-14", "importSettings", {
       source: submitData.source,
       bucket: submitData.bucket,
@@ -613,8 +613,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
     // CePeU Animated Doors
     // Keep the extension when the legacy importer combines maps. It previously
     // discarded animated object instances and left dangling portal links.
-    // const animated = mergeAnimatedDoors(files, aggregated.resolution.map_origin);
-    //if (animated) aggregated.animated_doors = animated;
+
 
     // adapt the walls
     for (var fidx = 0; fidx < files.length; fidx++) {
@@ -1098,7 +1097,6 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
     // if no animated doors are found the following code will be the fallback. Else an array of doors is returned
     let doors = [];
     let ddDoors = file.portals;
-    //==> Inject doors which are objects here
     let sceneDimensions = scene.getDimensions()
     let offsetX = sceneDimensions.sceneX
     let offsetY = sceneDimensions.sceneY
@@ -1123,7 +1121,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
           light: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           sight: door.closed ? CONST.WALL_SENSE_TYPES.NORMAL : CONST.WALL_SENSE_TYPES.PROXIMITY,
           threshold: door.closed ? {} : { attenuation: true, light: 10, sight: 10 }
-        }))   // Proximity type if door.closed = false (assumes they are windows)
+        }))
       }
       catch (e) {
         console.error("Could not create Wall Document (door): " + e)
@@ -1132,17 +1130,6 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
 
     //check if this needs to be called earlier and the replacement needs to take place. What if there is no regular door instance? Meaning if there is no regular portal at all?
     //Then we want to return object doors anyway
-    //console.log("Start doors array", ddDoors)
-    //console.log("File Object START: ", file)
-    //if (file.hasOwnProperty("animated_doors")) //we have an uvtt which potentially holds animated doors, use hasOwn if property can be null
-    //{
-    //  const doorsToReplace = GetAnimatedDoors(file, scene, offset, pixelsPerGrid) // all doors will be replaced because now hinge information for plain doors can also be present, portals which are not animated will get an animated property but retain the old logic
-    //  console.log("doors to add", doorsToReplace)
-    //  if (doorsToReplace.length > 0) { // only replace if there are doort instances in the animated doors section which have been returned
-    //    doors = doorsToReplace        //replace the doors array with the new one which contains animated doors, a return could take place but I keep it as a plugin into the regular code
-    //    console.log("End doors array", doors)
-    // }
-    // }
     return doors.filter(d => d)
   }
 
@@ -1239,22 +1226,4 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
     return { ppg, scaled, originalPpg: requestedPpg };
   }
 
-  /*
-  static _createDoorsFromObjects(file) {
-    console.log("animated doors list:", file.animated_doors)
-    console.log("animated doors assets:", file.animated_doors.assets) //need to be decoded and uploaded to be later used as textures
-    console.log("animated doors instances:", file.animated_doors.instances) //this is a map with keys 1 to n
-    //I need to return an array of objects that have a bound property that hold a two dimensional array of objects with x and y properties
-    // might be as easy as returning an array of the instances, but I need to check
-    // only add doors of type object and not portal from source property
-    //First s tep create an array from the animated_doors map
-    const doorsMap = new Map(Object.entries(file.animated_doors.instances));
-    console.log("Size of instances:", doorsMap.size)
-    if (doorsMap.size === 0) return []; //could be empty if no animated doors exist
-    console.log("doors Map:", doorsMap)
-    const animatedObjectDoors = Array.from(doorsMap.values()).filter(door => door.source === "object");
-    console.log("animatedObjectDoors: ", animatedObjectDoors)
-    if (animatedObjectDoors.length === 0) return []; //no object doors, so return empty array]
-    return animatedObjectDoors
-  }*/
 }
