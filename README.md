@@ -2,7 +2,7 @@
 
 Allows importing Universal VTT map files into FoundryVTT.
 
-![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/CePeU/FVTT-UVTT-Animated-Doors-importer-v14/latest/dd-import-ad-v13.zip)
+![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/CePeU/FVTT-UVTT-Animated-Doors-importer-v14/latest/dd-import-ad-v14.zip)
 
 ## About this Version
 
