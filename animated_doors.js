@@ -249,6 +249,7 @@ export function GetAnimatedDoors(file, scene, offset, pixelsPerGrid) {
                         ((c[2] - originX) * pixelsPerGrid) + offsetX,
                         ((c[3] - originY) * pixelsPerGrid) + offsetY
                     ],
+                    flags: { core: { textureGridSize: foundryDoor.texture_grid_size } }, // Need to adjust texture grid size here too - so the mesh is displayed correctly - see https://foundryvtt.com/api/v14/variables/CONFIG.Wall.html
                     animation: null, // If the door has animation, add it to the property else let it be null
                     door: 0,// 0 = wall, 1 = door, 2 = secret door 
                     ds: 0,// door state ==> ds: 0 = closed 1 = open
