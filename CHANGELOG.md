@@ -1,3 +1,12 @@
+## [1.1.0] / 2026-10-24
+### Added
+- Added level import functionality
+### Fixed
+### Changed
+### Removed
+### Deprecated
+### Security
+
 ## [1.0.1] / 2026-10-23
 ### Added
 ### Fixed

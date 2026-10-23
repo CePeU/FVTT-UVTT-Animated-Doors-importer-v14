@@ -370,6 +370,7 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
     let level = {
       _id: id,
       name: content.levelName || content.name,
+      elevation: { bottom: content.bottom || 0, top: content.top || 20 }, //CePeU:Animated Doors mod added elevation information
       background: {
         src: this._createImagePath(content, importData)
       }
@@ -389,12 +390,15 @@ class DDImporter extends foundry.applications.api.HandlebarsApplicationMixin(fou
       let name = this.element.querySelector("[name=levelName" + i + "]")
       let file = input.files[0];
 
+      //PSU add level info
+      console.log("FILE LEVEL INFO", file)
       if (file === undefined) { continue }
 
       try {
         let content = JSON.parse(await file.text());
         content.name = file.name.split(".")[0];
-        content.levelName = name.value || content.name;
+        //CePeU:Animated Doors mod inserted UVTT level name 
+        content.levelName = name.value || content.level_name || content.name;
         files.push(content);
       }
       catch (e) {
